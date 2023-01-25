@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -23,10 +24,10 @@ class Article
     private ?string $author = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $creationDate = null;
+    private ?DateTimeInterface $creationDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updatedDate = null;
+    private ?DateTimeInterface $updatedDate = null;
 
     #[ORM\Column(length: 50)]
     private ?string $introductionTitle = null;
@@ -75,24 +76,26 @@ class Article
         return $this;
     }
 
-    public function getCreationDate(): ?\DateTimeInterface
+    public function getCreationDate(): ?DateTimeInterface
     {
         return $this->creationDate;
     }
 
-    public function setCreationDate(\DateTimeInterface $creationDate): self
+    public function setCreationDate(): self
     {
-        $this->creationDate = $creationDate;
+        if ($this->creationDate === null) {
+            $this->creationDate = new \DateTime('now');
+        }
 
         return $this;
     }
 
-    public function getUpdatedDate(): ?\DateTimeInterface
+    public function getUpdatedDate(): ?DateTimeInterface
     {
         return $this->updatedDate;
     }
 
-    public function setUpdatedDate(?\DateTimeInterface $updatedDate): self
+    public function setUpdatedDate(?DateTimeInterface $updatedDate): self
     {
         $this->updatedDate = $updatedDate;
 
